@@ -11,5 +11,5 @@ public interface DataSource {
 
     List<Device> readData();
 
-    List<String[]> pipeline(String inputFilename, String ouputFilename, int min, int max);
+    void pipeline(String inputFilename, String ouputFilename, int min, int max);
 }

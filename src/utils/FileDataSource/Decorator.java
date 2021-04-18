@@ -28,7 +28,7 @@ public class Decorator implements DataSource {
     }
 
     @Override
-    public List<String[]> pipeline(String inputFilename, String ouputFilename, int min, int max) {
-        return wrapper.pipeline(inputFilename, ouputFilename, min, max);
+    public void pipeline(String inputFilename, String ouputFilename, int min, int max) {
+        wrapper.pipeline(inputFilename, ouputFilename, min, max);
     }
 }

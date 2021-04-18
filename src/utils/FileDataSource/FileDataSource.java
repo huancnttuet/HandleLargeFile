@@ -75,7 +75,7 @@ public class FileDataSource implements DataSource {
     }
 
     @Override
-    public List<String[]> pipeline(String inputFilename, String ouputFilename, int min, int max) {
+    public void pipeline(String inputFilename, String ouputFilename, int min, int max) {
         StringBuffer sb = new StringBuffer();
         List<String[]> list = new ArrayList<String[]>();
         try {
@@ -84,36 +84,34 @@ public class FileDataSource implements DataSource {
             int i = min;
             while ((line = data.readLine()) != null && i >= min && i < max) {
 
-                String[] deviceString = line.split("\\,", 5);
-                if (deviceString.length != 5) {
-                    continue;
-                } else {
-                    list.add(new String[] { deviceString[0] + "," + deviceString[1] + ","
-                            + nomalizeOwner(deviceString[2]) + "," + deviceString[3] + ",", deviceString[4] });
-                }
+                // String[] deviceString = line.split("\\,", 5);
+             
+                // list.add(new String[] { deviceString[0] + "," + deviceString[1] + "," + nomalizeOwner(deviceString[2])
+                //         + "," + deviceString[3] + ",", deviceString[4] });
+               sb.append(line);
 
-                if (i % 100000 == 0) {
-                    System.out.println(i);
-                }
+                // if (i % 100000 == 0) {
+                // System.out.println(i);
+                // }
                 i++;
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        Collections.sort(list, (a, b) -> Integer.valueOf(a[1]) > Integer.valueOf(b[1]) ? -1
-                : Integer.valueOf(a[1]) == Integer.valueOf(b[1]) ? 0 : 1);
+        // Collections.sort(list, (a, b) -> Integer.valueOf(a[1]) >
+        // Integer.valueOf(b[1]) ? -1
+        // : Integer.valueOf(a[1]) == Integer.valueOf(b[1]) ? 0 : 1);
 
-        return list;
         // for (String[] l : list) {
-        // sb.append(l[0] + l[1] + "\n");
+        //     sb.append(l[0] + l[1] + "\n");
         // }
 
-        // File file = new File(ouputFilename);
-        // try (OutputStream fos = new FileOutputStream(file, true)) {
-        // fos.write(sb.toString().getBytes(), 0, sb.toString().length());
-        // } catch (IOException ex) {
-        // System.out.println(ex.getMessage());
-        // }
+        File file = new File(ouputFilename);
+        try (OutputStream fos = new FileOutputStream(file, true)) {
+            fos.write(sb.toString().getBytes(), 0, sb.toString().length());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
 
     }
 

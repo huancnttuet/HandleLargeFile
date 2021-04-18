@@ -1,10 +1,13 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -12,7 +15,7 @@ import java.util.Random;
 public class CreateFile {
     static List<String> stubCode = Arrays.asList("ERICVTTEK", "NSNVTTEK", "HUA");
     static List<String> stubName = Arrays.asList("MSC ERICSSON", "BTS NOKIA", "OCS HUAWEI", "EPC ERICSSON");
-    static List<String> stubOwner1 = Arrays.asList("TraN", "NguyeN", "Le", "ngUYen ", "le ", "traN  ", "Le  ");
+    static List<String> stubOwner1 = Arrays.asList("TraN    ", "NguyeN  ", "Le  ", "ngUYen ", "le ", "traN  ", "Le  ");
     static List<String> stubOwner2 = Arrays.asList("Van   ", "VAn  ", "tHi  ", "vAN ", "thi   ", " vaN ", "vAn    ");
     static List<String> stubOwner3 = Arrays.asList("A", "a", "B", "b", "C", "c", "D");
     DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -22,17 +25,17 @@ public class CreateFile {
         final long startTime = System.currentTimeMillis();
 
         CreateFile createFile = new CreateFile();
-
-        CreateFileThread t1 = createFile.new CreateFileThread("data\\input1.txt", startTime);
-        CreateFileThread t2 = createFile.new CreateFileThread("data\\input1.txt", startTime);
-        CreateFileThread t3 = createFile.new CreateFileThread("data\\input1.txt", startTime);
-        CreateFileThread t4 = createFile.new CreateFileThread("data\\input1.txt", startTime);
-        CreateFileThread t5 = createFile.new CreateFileThread("data\\input1.txt", startTime);
-        CreateFileThread t6 = createFile.new CreateFileThread("data\\input1.txt", startTime);
-        CreateFileThread t7 = createFile.new CreateFileThread("data\\input1.txt", startTime);
-        CreateFileThread t8 = createFile.new CreateFileThread("data\\input1.txt", startTime);
-        CreateFileThread t9 = createFile.new CreateFileThread("data\\input1.txt", startTime);
-        CreateFileThread t10 = createFile.new CreateFileThread("data\\input1.txt", startTime);
+        String path = "data\\input1.txt";
+        CreateFileThread t1 = createFile.new CreateFileThread(path, startTime);
+        CreateFileThread t2 = createFile.new CreateFileThread(path, startTime);
+        CreateFileThread t3 = createFile.new CreateFileThread(path, startTime);
+        CreateFileThread t4 = createFile.new CreateFileThread(path, startTime);
+        CreateFileThread t5 = createFile.new CreateFileThread(path, startTime);
+        CreateFileThread t6 = createFile.new CreateFileThread(path, startTime);
+        CreateFileThread t7 = createFile.new CreateFileThread(path, startTime);
+        CreateFileThread t8 = createFile.new CreateFileThread(path, startTime);
+        CreateFileThread t9 = createFile.new CreateFileThread(path, startTime);
+        CreateFileThread t10 = createFile.new CreateFileThread(path, startTime);
 
         for (int i = 0; i < 10; i++) {
             Thread thread1 = new Thread(t1);
@@ -77,17 +80,32 @@ public class CreateFile {
         public synchronized void run() {
             System.out.println("ThreadBase " + Thread.currentThread().getId() + " is running");
 
-            StringBuffer str = new StringBuffer();
+            StringBuffer sb = new StringBuffer();
             for (int i = 0; i < 1000000; i++) {
-                str.append(RandomDevice());
-                if (i % 100000 == 0) {
-                    System.out.println(i);
-                }
+
+                sb.append(RandomDevice());
+                // if (i % 1000000 == 0) {
+                // System.out.println(i);
+                // }
             }
-            String data = str.toString();
+
             File file = new File(filename);
+
+            // BufferedWriter writer;
+            // try {
+            // writer = new BufferedWriter(new FileWriter(file, true));
+            // for (int i = 0; i < 10000000; i++) {
+            // writer.write(RandomDevice());
+
+            // }
+
+            // writer.close();
+            // } catch (IOException e) {
+            // e.printStackTrace();
+            // }
+
             try (OutputStream fos = new FileOutputStream(file, true)) {
-                fos.write(data.getBytes(), 0, data.length());
+                fos.write(sb.toString().getBytes(), 0, sb.toString().length());
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
@@ -110,7 +128,7 @@ public class CreateFile {
             // * 60 * 60 * 1000));
             // String inputDate = df.format(new Date(ms));
             String inputDate = "12/20/2004";
-            String warrentyYear = String.valueOf(randomizer.nextInt(10) + 1);
+            String warrentyYear = String.valueOf(randomizer.nextInt(9) + 1);
 
             return code + "," + name + "," + owner + "," + inputDate + "," + warrentyYear + "\n";
         }
